@@ -1,25 +1,58 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState } from 'react'
+import './App.css'
 
 function App() {
+  const [toDoItems, setToDoItems] = useState([])
+  const [inputValue, setInputValue] = useState('')
+
+  const saveItems = (e) => {
+    e.preventDefault()
+
+    const arr = toDoItems
+    const obj = { name: inputValue }
+    arr.push(obj)
+
+    setToDoItems(arr)
+    setInputValue('')
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+    <div className='App'>
+      <header className='App-header'>
+        <div className='container'>
+          <h1>To do list</h1>
+          <form
+            onSubmit={(e) => {
+              saveItems(e)
+            }}
+          >
+            <input
+              type='text'
+              value={inputValue}
+              onChange={(e) => {
+                setInputValue(e.target.value)
+              }}
+            />
+
+            <button type='submit'>Submit</button>
+          </form>
+          <div className='item-container'>
+            {toDoItems.length < 0 ? (
+              <p>Add some items to your to do list</p>
+            ) : (
+              toDoItems.map((item, index) => {
+                return (
+                  <div key={index}>
+                    <p>{item.name}</p>
+                  </div>
+                )
+              })
+            )}
+          </div>
+        </div>
       </header>
     </div>
-  );
+  )
 }
 
-export default App;
+export default App
